@@ -18,7 +18,6 @@ You can check `requirements.txt` for the list of needed dependencies (like torch
 pip install -r requirements.txt
 \`\`\`
 
-<<<<<<< HEAD
 ## Quickstart
 
 To quickly debate with the model or watch the model generate a debate in real time, do the following:
@@ -32,7 +31,6 @@ See the instructions below to train your own model and to use the application in
 ## Other Usage
 =======
 ## Usage
->>>>>>> 7d5b632a9bd1c8ce37d6e30c350fbe1b062b9b2d
 
 Run the main file \`debate_gpt.py\` with a mode followed by options:
 
