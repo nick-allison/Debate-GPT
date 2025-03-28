@@ -8,7 +8,6 @@ This project offers a simple command-line tool to train and run a GPT-style lang
 * Evaluate the model by generating completions for a prompt
 * Continuously generate text token by token with slight delays
 * Engage in a “debate” mode to interact with the model in real time
-* Optionally use a BPE-based tokenizer instead of the default character-level approach
 
 ## Installation
 
