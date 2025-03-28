@@ -28,8 +28,6 @@ To quickly debate with the model or watch the model generate a debate in real ti
 
 See the instructions below to train your own model and to use the application in a more customized way. 
 
-## Other Usage
-=======
 ## Usage
 
 Run the main file \`debate_gpt.py\` with a mode followed by options:
@@ -73,19 +71,12 @@ python debate_gpt.py debate --input my_data.txt --load my_finetuned_model.pth
 
 Interact with the model in a back-and-forth conversation loop.
 
-## Optional BPE File
+## Other(Messy)
 
-You can provide a BPE file for tokenization:
-
-\`\`\`
-python debate_gpt.py train --input text_corpus.txt --bpe my_bpe_vocab.json
-\`\`\`
-
-If no \`--bpe\` is specified, a character-level tokenizer is used by default.
+Several other notebooks that were used for this project are also included in the 'other' folder.  This code is a bit messy, but feel free to take a look!
 
 ## Notes
 
-* The project is for demonstration. The BPE logic here is simplified.
 * For best results, run on a GPU-enabled environment.
 
 Enjoy training your model or using it to generate text. 
