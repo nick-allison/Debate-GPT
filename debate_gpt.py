@@ -1,8 +1,3 @@
-<<<<<<< HEAD
-=======
-#!/usr/bin/env python3
-
->>>>>>> 7d5b632a9bd1c8ce37d6e30c350fbe1b062b9b2d
 import argparse
 import sys
 import os
@@ -11,21 +6,13 @@ import torch
 import torch.nn.functional as F
 
 from models import GPTLanguageModel
-<<<<<<< HEAD
 from tokenizers import BPETokenizer
-=======
-from tokenizers import CharacterTokenizer
->>>>>>> 7d5b632a9bd1c8ce37d6e30c350fbe1b062b9b2d
 from dataset import TextDataset
 from train import train_loop, estimate_loss
 
 def indefinite_continuous_generate(model, tokenizer, prompt):
     """
-<<<<<<< HEAD
     Generate tokens indefinitely. Done one token at a time
-=======
-    Generate tokens indefinitely. We do it one token at a time
->>>>>>> 7d5b632a9bd1c8ce37d6e30c350fbe1b062b9b2d
     until user presses Ctrl+C.
     """
     device = next(model.parameters()).device
@@ -43,10 +30,7 @@ def indefinite_continuous_generate(model, tokenizer, prompt):
             logits = logits[:, -1, :]
             probs = F.softmax(logits, dim=-1)
             next_id = torch.multinomial(probs, num_samples=1)
-<<<<<<< HEAD
             #print("\n\nToken:", next_id, "\n\n")
-=======
->>>>>>> 7d5b632a9bd1c8ce37d6e30c350fbe1b062b9b2d
             context_ids = torch.cat([context_ids, next_id], dim=1)
 
             new_token_str = tokenizer.decode([next_id.item()])
@@ -55,7 +39,6 @@ def indefinite_continuous_generate(model, tokenizer, prompt):
     except KeyboardInterrupt:
         print("\n[Stopped continuous generation by Ctrl+C]")
 
-<<<<<<< HEAD
 def debate_mode(model, tokenizer):
     """
     Interactively chat: user inputs a line, model responds.
@@ -69,13 +52,6 @@ def debate_mode(model, tokenizer):
     503 is the actual stopping points, but if it is predicting one of the others(500, 501, 504), then this is naturally
     a reasonable time to stop too based on how the fine tune data was set up.
     Additionally, any generated MOD: token (502) is replaced with "MODERATOR:\n".
-=======
-
-def debate_mode(model, tokenizer):
-    """
-    Interactively chat: user inputs a line, model responds.
-    We stop the model response if we see a newline token or a special token.
->>>>>>> 7d5b632a9bd1c8ce37d6e30c350fbe1b062b9b2d
     """
     device = next(model.parameters()).device
     conversation = ""
@@ -89,7 +65,6 @@ def debate_mode(model, tokenizer):
             print("Bye!")
             break
 
-<<<<<<< HEAD
         # Append the user message, a newline, and the HERO: token.
         conversation += "VILLIAN: " + user_msg + "\nHERO: "
 
@@ -132,28 +107,6 @@ def debate_mode(model, tokenizer):
         #Newline before the next prompt for input
         print()
 
-=======
-        # Append user message
-        conversation += "USER: " + user_msg + "\nMODEL: "
-        # Encode entire conversation
-        context_ids = torch.tensor([tokenizer.encode(conversation)], dtype=torch.long, device=device)
-        # We'll generate up to some tokens, but watch for stopping condition
-        generated = model.generate(context_ids, max_new_tokens=300)[0]
-        new_ids = generated[len(context_ids[0]):].tolist()
-        raw_response = tokenizer.decode(new_ids)
-
-        # We'll define a naive approach: stop at newline
-        # If you have special tokens <|END_HERO|>, check for them in raw_response.
-        stopping_tokens = ["\n", "<|END_HERO|>", "<|SEP|>"]
-        final_response = raw_response
-        for st in stopping_tokens:
-            if st in final_response:
-                final_response = final_response.split(st)[0]
-        print("MODEL:", final_response.strip())
-
-        # Add the model response to the conversation
-        conversation += final_response.strip() + "\n"
->>>>>>> 7d5b632a9bd1c8ce37d6e30c350fbe1b062b9b2d
 
 def main():
     if len(sys.argv) < 2:
@@ -168,19 +121,11 @@ def main():
     parser.add_argument("--prompt", type=str, default="", help="Prompt text for eval/continuous.")
     parser.add_argument("--max-tokens", type=int, default=100, help="Number of tokens to generate in eval mode.")
 
-<<<<<<< HEAD
     parser.add_argument("--context-size", type=int, default=768)
     parser.add_argument("--batch-size", type=int, default=32)
     parser.add_argument("--n-embd", type=int, default=768)
     parser.add_argument("--n-head", type=int, default=6)
     parser.add_argument("--n-layer", type=int, default=6)
-=======
-    parser.add_argument("--context-size", type=int, default=128)
-    parser.add_argument("--batch-size", type=int, default=32)
-    parser.add_argument("--n-embd", type=int, default=128)
-    parser.add_argument("--n-head", type=int, default=4)
-    parser.add_argument("--n-layer", type=int, default=4)
->>>>>>> 7d5b632a9bd1c8ce37d6e30c350fbe1b062b9b2d
     parser.add_argument("--epochs", type=int, default=1000)
     parser.add_argument("--report", type=int, default=100)
     parser.add_argument("--lr", type=float, default=1e-3)
@@ -207,7 +152,6 @@ def main():
 
     elif mode in ["eval", "continuous", "debate"]:
         if not args.load:
-<<<<<<< HEAD
             try:
                 if mode in ["eval", "continuous"]:
                     args.load = "model/model_pretrained.pth"
@@ -219,13 +163,6 @@ def main():
                 "exist.  Alternatively, you can sepcify a different model file to load using the --load tag.  "
                 "Use the -h flag for more information.")
                 sys.exit(1)
-=======
-            user_load = input("No --load provided. Path to model checkpoint to load: ").strip()
-            if not user_load:
-                print("No checkpoint path, exiting.")
-                sys.exit(1)
-            args.load = user_load
->>>>>>> 7d5b632a9bd1c8ce37d6e30c350fbe1b062b9b2d
 
     # set seed
     if args.seed is not None:
@@ -236,22 +173,14 @@ def main():
         print("Unknown mode:", mode)
         sys.exit(1)
 
-<<<<<<< HEAD
     # If we have an input file, read it
-=======
-    # If we have an input file, let's read it
->>>>>>> 7d5b632a9bd1c8ce37d6e30c350fbe1b062b9b2d
     text_data = ""
     if args.input and os.path.exists(args.input):
         with open(args.input, "r", encoding="utf-8") as f:
             text_data = f.read()
 
     # Build tokenizer
-<<<<<<< HEAD
     tokenizer = BPETokenizer()
-=======
-    tokenizer = CharacterTokenizer(text_data)
->>>>>>> 7d5b632a9bd1c8ce37d6e30c350fbe1b062b9b2d
     encoded_data = tokenizer.encode(text_data)
 
     # Build dataset
@@ -284,10 +213,7 @@ def main():
     elif mode == "eval":
         print("\n=== EVAL MODE ===")
         # We'll generate up to --max-tokens from the prompt
-<<<<<<< HEAD
         model.eval()
-=======
->>>>>>> 7d5b632a9bd1c8ce37d6e30c350fbe1b062b9b2d
         if args.prompt.strip():
             start_ids = tokenizer.encode(args.prompt)
             context_ids = torch.tensor([start_ids], dtype=torch.long, device=device)
@@ -308,8 +234,4 @@ def main():
         debate_mode(model, tokenizer)
 
 if __name__ == "__main__":
-<<<<<<< HEAD
     main()
-=======
-    main()
->>>>>>> 7d5b632a9bd1c8ce37d6e30c350fbe1b062b9b2d

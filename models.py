@@ -5,10 +5,7 @@ import torch.nn.functional as F
 class Head(nn.Module):
     def __init__(self, head_size, n_embd, context_size):
         super().__init__()
-<<<<<<< HEAD
         self.head_size = head_size
-=======
->>>>>>> 7d5b632a9bd1c8ce37d6e30c350fbe1b062b9b2d
         self.key = nn.Linear(n_embd, head_size, bias=False)
         self.query = nn.Linear(n_embd, head_size, bias=False)
         self.value = nn.Linear(n_embd, head_size, bias=False)
@@ -19,11 +16,7 @@ class Head(nn.Module):
         B, T, C = x.shape
         k = self.key(x)
         q = self.query(x)
-<<<<<<< HEAD
         wei = q @ k.transpose(-2, -1) * (self.head_size ** -0.5)
-=======
-        wei = q @ k.transpose(-2, -1) * (C ** -0.5)
->>>>>>> 7d5b632a9bd1c8ce37d6e30c350fbe1b062b9b2d
         wei = wei.masked_fill(self.tril[:T, :T] == 0, float('-inf'))
         wei = F.softmax(wei, dim=-1)
         wei = self.dropout(wei)
@@ -96,16 +89,10 @@ class GPTLanguageModel(nn.Module):
 
         loss = None
         if targets is not None:
-<<<<<<< HEAD
             B, T, C = logits.shape
             logits = logits.view(B*T, C)
             targets = targets.view(B*T)
             loss = F.cross_entropy(logits, targets)
-=======
-            logits_view = logits.view(B*T, -1)
-            targets_view = targets.view(B*T)
-            loss = F.cross_entropy(logits_view, targets_view)
->>>>>>> 7d5b632a9bd1c8ce37d6e30c350fbe1b062b9b2d
 
         return logits, loss
 
